@@ -1,0 +1,5 @@
+<div [ngClass]="{'skill-div': skillType.type != 1 }">
+  <img src="Image\{{skillType.src}}" cass="skill-image" [valign]="skillType.type != 2" [ngClass]="{'fill-size': skillType.type == 2, 'adapt-image': skillType.type == 3 || skillType.type == 4}" *ngIf="skillType.type != 1">
+  <div class="absolute-fill" [tooltip]="skillType.name"></div>
+  <div *ngIf="skillType.type == 1" class="skill-text">{{ skillType.text }}</div>
+</div>

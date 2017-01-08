@@ -1,0 +1,55 @@
+  <div class="page noselect">
+    <div>
+      <span class="field">Name:</span>
+      <input type="text" class="field-input" [(ngModel)]="model.name">
+      <input type="button" class="button" value="New" (click)="newAction()">
+      <input type="button" class="button" value="Save" (click)="saveAction()">
+      <input type="button" class="button" value="Load" (click)="loadAction()">
+      <span *ngIf="model.modified">*</span>
+    </div>
+    <div style="height:10px"></div>
+    <div style="border: 1px solid black;display: inline-block"> 
+      <div class="table skill-table">
+        <div class="row">
+          <div class="cell skill-cell" *ngFor="let node of model.displayNodes;let i = index">{{i+2}}</div>
+        </div>
+        <div class="row" *ngFor="let j of cycle(2)">
+          <div *ngFor="let node of model.displayNodes" style="position:relative" class="cell selectable" [ngClass]="{'skill-image-cell':node.next[j].state!=1, 'empty-skill-cell':node.next[j].state==1, 'selected-cell': node.next[j] == model.selectedNode }" (click)="clickAction($event, node.next[j]);$event.stopPropagation()">
+            <skill-node [node]="node.next[j]" [selected]="node.next[j] == model.selectedNode"></skill-node>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="SkillPanel" class="skill-panel" style="display:none">
+      <div class="table skill-table" style="border-spacing: 5px">
+        <div class="row" *ngFor="let j of cycle(9)">
+          <div style="position:relative" [ngClass]="{ 'selectable skill-image-cell': j*10+i < allSkills().length }" class="cell" *ngFor="let i of cycle(10)">
+            <skill [skillType]="allSkills()[j*10+i]" *ngIf="j*10+i < allSkills().length" (click)="selectSkillAction(allSkills()[j*10+i]);$event.stopPropagation()"></skill>
+          </div>
+        </div>
+      </div> 
+    </div>
+    <!-- context-menu -->
+    <div id="ContextMenu" class="context-menu" style="display:none">
+      <div class="context-menu-item split" (click)="enableNodeAction();$event.stopPropagation()">Enable</div>
+      <div class="context-menu-item split" (click)="disableNodeAction();$event.stopPropagation()">Disable</div>
+      <div class="context-menu-item split" (click)="changeNodeAction();$event.stopPropagation()">Change</div>
+      <div class="context-menu-item split" (click)="swapNodeAction();$event.stopPropagation()">Swap</div>
+      <div class="context-menu-item" (click)="removeNodeAction();$event.stopPropagation()">Remove</div>
+    </div>
+    <div id="Overlay" class="overlay" *ngIf="ShowOverlay"></div>
+    <!-- savefile-dialog -->
+    <div id="SavefileDialog" class="savefile-dialog" *ngIf="ShowSavefileDialog">
+      <div class="savefile-scrollarea">
+        <div class="savefile-item" *ngFor="let name of model.SaveFiles; trackBy: index" (click)="selectFilenameAction(name)" (dblclick)="vm.DoFilenameAction(name)">{{name}}</div>
+      </div>
+      <div style="margin-top: 10px">
+        <input type="text" class="savefile-input" [(ngModel)]="model.SelectedFilename">
+      </div>
+      <div style="margin-top: 10px;text-align:center">
+        <input type="button" value="Save" class="savefile-button" (click)="saveConfirmedAction()" *ngIf="model.savefileDialogType == 1">
+        <input type="button" value="Load" class="savefile-button" (click)="loadConfirmedAction()" *ngIf="model.savefileDialogType == 2">
+        <input type="button" value="Cancel" class="savefile-button" (click)="cancelSaveAction()">
+      </div>
+    </div>
+  </div>

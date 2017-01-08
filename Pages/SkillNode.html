@@ -1,0 +1,7 @@
+<div [ngClass]="{'skill-div': node.state!=1 && node.skill.type!=1 }">
+  <img src="Image\{{node.skill.src}}" class="skill-image" [valign]="node.skill.type != 2" [ngClass]="{'fill-size': node.skill.type == 2, 'adapt-image': node.skill.type == 3 || node.skill.type == 4}" *ngIf="node.state != 1 && node.skill.type != 1">
+  <div class="absolute-fill" [ngClass]="{'gray-style':node.state==3 && node.isNextEmpty(), 'green-style':node.state==3 && !node.isNextEmpty() }" *ngIf="node.state != 1" [tooltip]="node.skill.name"></div>
+  <div *ngIf="node.state == 1">+</div>
+  <div *ngIf="node.state != 1 && node.skill.type == 1" class="skill-text">{{ node.skill.text }}</div>
+</div>
+
